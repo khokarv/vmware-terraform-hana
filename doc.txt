@@ -1,0 +1,51 @@
+
+  num_cores_per_socket = 2 # controlling socket and NUMA
+  scsi_controller_count = 4 # putting different disks on differen SCSI controller
+
+  
+##########################################################################
+#
+#        To get desired scsi controller number and unit number
+# 	     CONTROLLER_TYPE:BUS_NUMBER:UNIT_NUMBER
+#		scsi_controller_count = 4
+#		scsi_controller 1, unit 0 - 14
+#		scsi_controller 2, unit 15 - 29
+#		scsi_controller 3, unit 30 - 44
+#   unit_number = 0  - "device_address": "scsi:0:0", - 1G for boot disk
+#   unit_number = 1  - "device_address": "scsi:0:1", - 210G - OS disk
+#   unit_number = 15 - "device_address": "scsi:1:0", - 120G - HANA data
+#   unit_number = 30 - "device_address": "scsi:2:0", - 80G - HANA log
+#   unit_number = 45 - "device_address": "scsi:3:0", - 100G - HANA shared
+#
+###########################################################################
+  disk {
+    label = "Boot-Partition-DISK"
+    unit_number = 0 
+    size  = 1
+    thin_provisioned = true
+    eagerly_scrub = false
+  }
+ disk {
+    label       = "OS-DISK"
+    unit_number = 1 <===
+    size        = var.vm_disk0_size
+    thin_provisioned = true
+  }
+ disk {
+    label       = "HANA-DATA-DISK"
+    unit_number = 15 <===
+    size        = var.vm_disk1_size
+    thin_provisioned = true
+  }
+ disk {
+    label       = "HANA-LOG-DISK"
+    unit_number = 30 <===
+    size        = var.vm_disk2_size
+    thin_provisioned = true
+  }
+ disk {
+    label       = "HANA-SHARED-DISK"
+    unit_number =  45 <===
+    size        = var.vm_disk3_size 
+    thin_provisioned = true
+  }
